@@ -64,7 +64,7 @@ const PlaceOrder = () => {
     } catch (error) {
       toast.error("Unable to place order. Please try again.");
       console.log(error);
-      
+
     }
   };
 
@@ -110,7 +110,7 @@ const PlaceOrder = () => {
     } catch (error) {
       toast.error("Payment failed. Please try again.");
       console.log(error);
-      
+
     }
   };
 
@@ -289,6 +289,28 @@ const PlaceOrder = () => {
                   >
                     <option value="">Choose...</option>
                     <option>Karnataka</option>
+                    <option>Tamil Nadu</option>
+                    <option>Kerala</option>
+                    <option>Andhra Pradesh</option>
+                    <option>Odisha</option>
+                    <option>West Bengal</option>
+                    <option>Uttar Pradesh</option>
+                    <option>Madhya Pradesh</option>
+                    <option>Jharkhand</option>
+                    <option>Bihar</option>
+                    <option>Chhattisgarh</option>
+                    <option>Manipur</option>
+                    <option>Mizoram</option>
+                    <option>Nagaland</option>
+                    <option>Sikkim</option>
+                    <option>Tripura</option>
+                    <option>Assam</option>
+                    <option>Haryana</option>
+                    <option>Punjab</option>
+                    <option>Rajasthan</option>
+                    <option>Goa</option>
+                    <option>Delhi</option>
+                    <option>Uttarakhand</option>
                   </select>
                 </div>
 
@@ -306,6 +328,19 @@ const PlaceOrder = () => {
                   >
                     <option value="">Choose...</option>
                     <option>Banglore</option>
+                    <option>Hyderabad</option>
+                    <option>Chennai</option>
+                    <option>Delhi</option>
+                    <option>Mumbai</option>
+                    <option>Kolkata</option>
+                    <option>Pune</option>
+                    <option>Jaipur</option>
+                    <option>Visakhapatnam</option>
+                    <option>Surat</option>
+                    <option>Indore</option>
+                    <option>Thane</option>
+                    <option>Patna</option>
+                    <option>Coimbatore</option>
                   </select>
                 </div>
 
