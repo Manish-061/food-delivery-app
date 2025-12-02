@@ -1,6 +1,6 @@
 # 🍔 Food Delivery Application
 
-A full-stack food delivery application built with **Spring Boot** backend, **React** admin panel, and **MongoDB** database. The application provides a complete solution for managing food items, orders, and administrative tasks in a food delivery business.
+A full-stack food delivery application built with **Spring Boot** backend, **React** for both Admin and Customer panels, and **MongoDB** database. The application provides a complete ecosystem for managing food items, orders, and administrative tasks, as well as a seamless ordering experience for customers.
 
 ## 📋 Table of Contents
 - [Features](#-features)
@@ -17,17 +17,27 @@ A full-stack food delivery application built with **Spring Boot** backend, **Rea
 
 ## ✨ Features
 
+### Customer Panel Features
+- 🛍️ **Browse Food**: Explore a variety of food items with categories
+- 🛒 **Cart Management**: Add items to cart, adjust quantities
+- 💳 **Secure Checkout**: Integrated payment gateway (Razorpay)
+- 📦 **Order Tracking**: View order status and history
+- 🔐 **Authentication**: Secure Login and Signup functionality
+- 📱 **Responsive UI**: Optimized for mobile and desktop
+
 ### Admin Panel Features
 - 📝 **Food Management**: Add, edit, and delete food items
-- 📋 **Order Management**: View and manage customer orders
+- 📋 **Order Management**: View and update order status (Processing, Out for Delivery, Delivered)
 - 📊 **Dashboard**: Overview of business metrics
 - 🖼️ **Image Upload**: Upload food images to AWS S3
-- 📱 **Responsive Design**: Works on desktop and mobile devices
+- 🔐 **Secure Access**: Protected admin routes
 
 ### Backend API Features
 - 🔐 **RESTful API**: Well-structured REST endpoints
+- 🛡️ **Security**: JWT-based authentication and authorization
 - 📦 **MongoDB Integration**: NoSQL database for scalability
 - ☁️ **AWS S3 Integration**: Cloud storage for images
+- 💸 **Payment Integration**: Razorpay payment gateway support
 - ✅ **Data Validation**: Request validation and error handling
 - 🚀 **Spring Boot**: Modern Java framework
 
@@ -38,13 +48,15 @@ A full-stack food delivery application built with **Spring Boot** backend, **Rea
 - **Language**: Java 21
 - **Database**: MongoDB
 - **Cloud Storage**: AWS S3
+- **Security**: Spring Security, JWT
+- **Payments**: Razorpay
 - **Build Tool**: Maven
 - **Additional**: Lombok, Spring Data MongoDB, Spring Validation
 
-### Admin Panel (adminpanel)
+### Frontend (adminpanel & customerpanel)
 - **Framework**: React 19.1.0
 - **Build Tool**: Vite 7.0.4
-- **UI Framework**: Bootstrap 5.3.7
+- **UI Framework**: Bootstrap 5.3.8
 - **Icons**: Bootstrap Icons
 - **HTTP Client**: Axios
 - **Routing**: React Router DOM
@@ -56,7 +68,7 @@ A full-stack food delivery application built with **Spring Boot** backend, **Rea
 Food_Delivery_Application/
 ├── 📂 foodiesapi/                 # Spring Boot Backend API
 │   ├── 📂 src/main/java/in/manish/foodiesapi/
-│   │   ├── 📂 config/             # Configuration classes
+│   │   ├── 📂 config/             # Security & App Config
 │   │   ├── 📂 controller/         # REST Controllers
 │   │   ├── 📂 entity/             # Database entities
 │   │   ├── 📂 io/                 # Request/Response DTOs
@@ -64,12 +76,20 @@ Food_Delivery_Application/
 │   │   └── 📂 service/            # Business logic
 │   ├── 📂 src/main/resources/     # Application properties
 │   └── 📄 pom.xml                 # Maven dependencies
-├── 📂 adminpanel/                 # React Admin Panel
+├── 📂 adminpanel/                 # React Admin Dashboard
 │   ├── 📂 src/
 │   │   ├── 📂 assets/             # Images and static files
 │   │   ├── 📂 components/         # Reusable components
-│   │   ├── 📂 pages/              # Page components
+│   │   ├── 📂 pages/              # Admin pages (Add Food, List Orders)
 │   │   └── 📂 services/           # API service functions
+│   ├── 📄 package.json            # NPM dependencies
+│   └── 📄 vite.config.js          # Vite configuration
+├── 📂 customerpanel/              # React Customer App
+│   ├── 📂 src/
+│   │   ├── 📂 assets/             # Images and static files
+│   │   ├── 📂 components/         # Reusable components
+│   │   ├── 📂 pages/              # Customer pages (Home, Cart, Place Order)
+│   │   └── 📂 context/            # Global state (StoreContext)
 │   ├── 📄 package.json            # NPM dependencies
 │   └── 📄 vite.config.js          # Vite configuration
 └── 📄 README.md                   # Project documentation
@@ -84,13 +104,13 @@ Before running this application, make sure you have the following installed:
 - **MongoDB** (local or cloud instance)
 - **Maven 3.6** or higher
 - **AWS Account** (for S3 storage)
+- **Razorpay Account** (for payments)
 
 ## 🚀 Installation & Setup
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/Manish-061/Food_Delivery_App.git
-cd Food_Delivery_Application
+git clone https://github.com/Manish-061/food-delivery-app.git
 ```
 
 ### 2. Backend Setup (foodiesapi)
@@ -101,11 +121,23 @@ cd foodiesapi
 
 # Install dependencies
 mvn clean install
+```
 
-# Admin Panel Setup (adminpanel)
+### 3. Frontend Setup
 
+**Admin Panel:**
+```bash
 # Navigate to admin panel directory
 cd adminpanel
+
+# Install dependencies
+npm install
+```
+
+**Customer Panel:**
+```bash
+# Navigate to customer panel directory
+cd ../customerpanel
 
 # Install dependencies
 npm install
@@ -115,7 +147,7 @@ npm install
 
 ### Backend Configuration
 
-Create environment variables or update `application.properties`:
+Update `src/main/resources/application.properties` or set environment variables:
 
 ```properties
 # MongoDB Configuration
@@ -126,58 +158,53 @@ aws.access.key=${AWS_ACCESS_KEY}
 aws.secret.key=${AWS_SECRET_KEY}
 aws.region=ap-south-1
 aws.s3.bucketname=foodies-food-manish
+
+# Razorpay Configuration
+razorpay.key.id=${RAZORPAY_KEY_ID}
+razorpay.key.secret=${RAZORPAY_KEY_SECRET}
+
+# JWT Configuration
+jwt.secret=${JWT_SECRET}
 ```
 
 ### Environment Variables
 
-Set the following environment variables:
+Set the following environment variables in your system or IDE:
 
 ```bash
 # Windows (PowerShell)
 $env:AWS_ACCESS_KEY="your-aws-access-key"
 $env:AWS_SECRET_KEY="your-aws-secret-key"
-
-# Linux/Mac
-export AWS_ACCESS_KEY="your-aws-access-key"
-export AWS_SECRET_KEY="your-aws-secret-key"
+$env:RAZORPAY_KEY_ID="your-razorpay-key-id"
+$env:RAZORPAY_KEY_SECRET="your-razorpay-key-secret"
+$env:JWT_SECRET="your-secure-jwt-secret"
 ```
-
-### MongoDB Setup
-
-1. **Local MongoDB**: Install and start MongoDB on port 27017
-2. **MongoDB**: Update the connection string in `application.properties`
 
 ## 🏃‍♂️ Running the Application
 
-### Start Backend Server
+### 1. Start Backend Server
 
 ```bash
-# Navigate to backend directory
 cd foodiesapi
-
-# Run using Maven
 mvn spring-boot:run
-
-# Or run the JAR file
-java -jar target/foodiesapi-0.0.1-SNAPSHOT.jar
 ```
-
 The backend will start on `http://localhost:8080`
 
-### Start Admin Panel
+### 2. Start Admin Panel
 
 ```bash
-# Navigate to admin panel directory
 cd adminpanel
-
-# Start development server
 npm run dev
-
-# Or using yarn
-yarn dev
 ```
+The admin panel will typically start on `http://localhost:5173`
 
-The admin panel will start on `http://localhost:5173`
+### 3. Start Customer Panel
+
+```bash
+cd customerpanel
+npm run dev
+```
+The customer panel will typically start on `http://localhost:5174` (or the next available port)
 
 ## 📚 API Documentation
 
@@ -186,95 +213,41 @@ The admin panel will start on `http://localhost:5173`
 http://localhost:8080/api
 ```
 
-### Food Management Endpoints
+### Key Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/foods` | Get all food items |
-| GET | `/foods/{id}` | Get food item by ID |
-| POST | `/foods` | Create new food item |
-| PUT | `/foods/{id}` | Update food item |
-| DELETE | `/foods/{id}` | Delete food item |
-
-### Request/Response Examples
-
-#### Create Food Item
-```http
-POST /api/foods
-Content-Type: application/json
-
-{
-  "name": "Margherita Pizza",
-  "description": "Classic pizza with tomatoes and mozzarella",
-  "price": 12.99,
-  "category": "Pizza",
-  "imageUrl": "https://s3-bucket-url/pizza.jpg"
-}
-```
-
-#### Response
-```json
-{
-  "id": "60f7b3b3b3b3b3b3b3b3b3b3",
-  "name": "Margherita Pizza",
-  "description": "Classic pizza with tomatoes and mozzarella",
-  "price": 12.99,
-  "category": "Pizza",
-  "imageUrl": "https://s3-bucket-url/pizza.jpg",
-  "createdAt": "2024-08-02T07:40:53Z",
-  "updatedAt": "2024-08-02T07:40:53Z"
-}
-```
+| **Auth** | | |
+| POST | `/api/users/register` | Register new user |
+| POST | `/api/users/login` | User login |
+| **Food** | | |
+| GET | `/api/foods` | Get all food items |
+| POST | `/api/foods` | Add new food item (Admin) |
+| DELETE | `/api/foods/{id}` | Delete food item (Admin) |
+| **Cart** | | |
+| POST | `/api/cart/add` | Add item to cart |
+| POST | `/api/cart/remove` | Remove item from cart |
+| POST | `/api/cart/get` | Get user cart |
+| **Order** | | |
+| POST | `/api/order/place` | Place new order |
+| POST | `/api/order/verify` | Verify payment |
+| GET | `/api/order/userorders` | Get user order history |
+| GET | `/api/order/list` | Get all orders (Admin) |
+| POST | `/api/order/status` | Update order status (Admin) |
 
 ## 🎯 Usage Guide
 
-### Admin Panel Usage
+### Customer Journey
+1. **Sign Up/Login**: Create an account to start ordering.
+2. **Browse**: Explore the menu and filter by categories.
+3. **Add to Cart**: Select items and manage quantities in the cart.
+4. **Checkout**: Enter delivery details and proceed to payment.
+5. **Track**: Monitor the status of your order in "My Orders".
 
-1. **Access Admin Panel**: Navigate to `http://localhost:5173`
-2. **Add Food Items**: Use the "Add Food" section to create new menu items
-3. **Manage Foods**: View, edit, or delete existing food items in "List Foods"
-4. **Track Orders**: Monitor customer orders in the "Orders" section
-
-### Key Features
-- **Image Upload**: Drag and drop or click to upload food images
-- **Form Validation**: Real-time validation for all input fields
-- **Responsive Design**: Works seamlessly on all device sizes
-- **Toast Notifications**: User-friendly success/error messages
-
-## 🔧 Development
-
-### Backend Development
-
-```bash
-# Run in development mode with auto-reload
-cd foodiesapi
-mvn spring-boot:run -Dspring-boot.run.profiles=dev
-
-# Run tests
-mvn test
-
-# Generate JAR file
-mvn clean package
-```
-
-### Frontend Development
-
-```bash
-# Start development server with hot reload
-cd adminpanel
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-```
-
-## 📱 Screenshots
-
-*Add screenshots of your application here*
-
+### Admin Journey
+1. **Login**: Access the admin dashboard.
+2. **Manage Menu**: Add new dishes with images, descriptions, and prices.
+3. **Process Orders**: View incoming orders and update their status (e.g., from "Processing" to "Out for Delivery").
 
 ## 📝 License
 
@@ -288,13 +261,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- Spring Boot community for excellent documentation
-- React team for the amazing framework
-- MongoDB for the flexible database solution
-- AWS for reliable cloud storage
-
----
-
-⭐ If you found this project helpful, please give it a star!
-
-📧 For questions or support, please open an issue or contact the maintainer.
+- Spring Boot & React Communities
+- MongoDB
+- AWS & Razorpay
